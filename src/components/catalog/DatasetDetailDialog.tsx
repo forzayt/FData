@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
   DialogContent,
@@ -26,6 +27,7 @@ interface DatasetDetailDialogProps {
 }
 
 const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialogProps) => {
+  const { toast } = useToast();
   const [copied, setCopied] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewData, setPreviewData] = useState<any[]>([]);
@@ -36,6 +38,11 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
   const copyToClipboard = () => {
     navigator.clipboard.writeText(dataset.url);
     setCopied(true);
+    toast({
+      title: "URL Copied",
+      description: "Just use get method on the copied URL to access the dataset!",
+      duration: 3000,
+    });
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -127,7 +134,8 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
               ) : (
                 <>
                   <Copy className="h-4 w-4" />
-                  Copy API URL                </>
+                  Copy API URL
+                </>
               )}
             </Button>
           </div>
