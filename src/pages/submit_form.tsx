@@ -13,6 +13,8 @@ import {
   Globe,
   ArrowLeft,
   CheckCircle2,
+  FileCode,
+  Link2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,6 +48,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabase";
 
@@ -61,6 +64,7 @@ const SubmitDataset = () => {
   const [isPublic, setIsPublic] = useState(true);
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState("");
+  const [sourceType, setSourceType] = useState<"url" | "upload">("url");
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -78,7 +82,7 @@ const SubmitDataset = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (urlError) {
+    if (sourceType === "url" && urlError) {
       toast.error("Please fix the errors before submitting.");
       return;
     }
@@ -155,23 +159,6 @@ const SubmitDataset = () => {
 
       {/* ── Main content ── */}
       <div className="ml-64 flex-1 flex flex-col min-h-screen overflow-y-auto">
-        {/* <header className="px-8 py-6 flex items-center justify-between border-b border-white/5 bg-slate-900/20 backdrop-blur-sm sticky top-0 z-30">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full text-slate-400 hover:text-white hover:bg-white/5"
-              onClick={() => navigate("/dashboard")}
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
-            <div>
-              <h1 className="text-xl font-bold text-white tracking-tight">Submit a Dataset</h1>
-              <p className="text-sm text-slate-400">Share your data with the community</p>
-            </div>
-          </div>
-        </header> */}
-
         <main className="flex-1 px-8 py-10 max-w-4xl mx-auto w-full">
           <form onSubmit={handleSubmit} className="space-y-8">
             <Card className="bg-slate-900/40 border-white/5 backdrop-blur-md overflow-hidden">
@@ -207,29 +194,6 @@ const SubmitDataset = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  
-                  <div className="space-y-2">
-                  <Label htmlFor="url" className="text-slate-200">Dataset URL (GitHub/External)</Label>
-                  <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <Input
-                      id="url"
-                      type="url"
-                      value={url}
-                      onChange={(e) => validateUrl(e.target.value)}
-                      placeholder="https://github.com/user/repo/data.csv"
-                      className={`pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-blue-500/50 focus:ring-blue-500/20 ${urlError ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20' : ''}`}
-                      required
-                    />
-                  </div>
-                  {urlError ? (
-                    <p className="text-xs text-red-400 mt-1">{urlError}</p>
-                  ) : (
-                    <p className="text-xs text-slate-500 mt-1">Hint: URL must end with .csv or .json</p>
-                  )}
-                </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="tags" className="text-slate-200">Tags</Label>
                   <div className="relative">
@@ -241,29 +205,66 @@ const SubmitDataset = () => {
                     />
                   </div>
                 </div>
-                </div>
               </CardContent>
             </Card>
 
             <Card className="bg-slate-900/40 border-white/5 backdrop-blur-md overflow-hidden">
               <CardHeader className="pb-4">
                 <div className="flex items-center gap-2 text-purple-400 mb-1">
-                  <Upload className="w-4 h-4" />
-                  <span className="text-xs font-bold uppercase tracking-wider">File Upload</span>
+                  <FileCode className="w-4 h-4" />
+                  <span className="text-xs font-bold uppercase tracking-wider">Data Source</span>
                 </div>
-                <CardTitle className="text-2xl text-white">Data Files</CardTitle>
+                <CardTitle className="text-2xl text-white">Upload or Link Data</CardTitle>
                 <CardDescription className="text-slate-400">
-                  Upload your data files. Supported formats: CSV, JSON.
+                  Choose how you want to provide your data files.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="border-2 border-dashed border-white/10 rounded-2xl p-10 flex flex-col items-center justify-center bg-white/[0.02] hover:bg-white/[0.04] transition-colors cursor-pointer group">
-                  <div className="w-12 h-12 rounded-full bg-blue-600/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Upload className="w-6 h-6 text-blue-500" />
-                  </div>
-                  <p className="text-white font-medium mb-1">Click to upload or drag and drop</p>
-                  <p className="text-slate-500 text-sm">Max file size: 100MB</p>
-                </div>
+                <Tabs defaultValue="url" className="w-full" onValueChange={(v) => setSourceType(v as "url" | "upload")}>
+                  <TabsList className="grid w-full grid-cols-2 bg-white/5 border border-white/10 mb-6 p-1 h-12">
+                    <TabsTrigger value="url" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-400 gap-2">
+                      <Link2 className="w-4 h-4" />
+                      External URL
+                    </TabsTrigger>
+                    <TabsTrigger value="upload" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white text-slate-400 gap-2">
+                      <Upload className="w-4 h-4" />
+                      File Upload
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="url" className="space-y-4 focus-visible:outline-none focus-visible:ring-0">
+                    <div className="space-y-2">
+                      <Label htmlFor="url" className="text-slate-200">Dataset URL (GitHub/External)</Label>
+                      <div className="relative">
+                        <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                        <Input
+                          id="url"
+                          type="url"
+                          value={url}
+                          onChange={(e) => validateUrl(e.target.value)}
+                          placeholder="https://github.com/user/repo/data.csv"
+                          className={`pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-blue-500/50 focus:ring-blue-500/20 ${urlError ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20' : ''}`}
+                          required={sourceType === "url"}
+                        />
+                      </div>
+                      {urlError ? (
+                        <p className="text-xs text-red-400 mt-1">{urlError}</p>
+                      ) : (
+                        <p className="text-xs text-slate-500 mt-1">Hint: URL must end with .csv or .json</p>
+                      )}
+                    </div>
+                  </TabsContent>
+                  
+                  <TabsContent value="upload" className="focus-visible:outline-none focus-visible:ring-0">
+                    <div className="border-2 border-dashed border-white/10 rounded-2xl p-10 flex flex-col items-center justify-center bg-white/[0.02] hover:bg-white/[0.04] transition-colors cursor-pointer group">
+                      <div className="w-12 h-12 rounded-full bg-blue-600/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <Upload className="w-6 h-6 text-blue-500" />
+                      </div>
+                      <p className="text-white font-medium mb-1">Click to upload or drag and drop</p>
+                      <p className="text-slate-500 text-sm">Max file size: 100MB (Supported: CSV, JSON)</p>
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </CardContent>
             </Card>
 
