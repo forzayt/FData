@@ -56,18 +56,6 @@ const Navbar = () => {
           <a href="#how-it-works" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             How It Works
           </a>
-          <Link
-            to="/dashboard"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Dashboard
-          </Link>
-          <Link
-            to="/profile"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Profile
-          </Link>
           <a
             href="https://github.com/forzayt/FData"
             target="_blank"
@@ -78,39 +66,22 @@ const Navbar = () => {
             Contribute
           </a>
           <Link to="/datasets">
-            <Button size="sm" className="rounded-full bg-primary/90 px-4 hover:bg-primary">
-              Explore
-            </Button>
+           
           </Link>
 
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.user_metadata?.avatar_url} />
-                    <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 rounded-2xl border-white/10 bg-black/80 backdrop-blur-xl text-foreground">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user?.user_metadata?.full_name || user?.email}</p>
-                    <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-white/10" />
-                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link to="/dashboard">
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user?.user_metadata?.avatar_url} />
+                  <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
+                </Avatar>
+              </Button>
+            </Link>
           ) : (
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={handleLogin}
               className="rounded-full text-muted-foreground hover:text-foreground"
             >
@@ -133,34 +104,20 @@ const Navbar = () => {
               Explore
             </Button>
           </Link>
-          
+
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.user_metadata?.avatar_url} />
-                    <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 rounded-2xl border-white/10 bg-black/80 backdrop-blur-xl text-foreground">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user?.user_metadata?.full_name || user?.email}</p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-white/10" />
-                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link to="/dashboard">
+              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user?.user_metadata?.avatar_url} />
+                  <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
+                </Avatar>
+              </Button>
+            </Link>
           ) : (
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={handleLogin}
               className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground"
             >
