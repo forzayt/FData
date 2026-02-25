@@ -23,6 +23,17 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { NavLink } from "@/components/NavLink";
 import Profile from "./Profile";
 import { supabase } from "@/lib/supabase";
@@ -33,7 +44,10 @@ const sidebarLinks = [
 ];
 
 const accountLinks = [
+  { label: "Home", icon: LayoutDashboard, to: "/" },
   { label: "Profile", icon: User, to: "#profile-info" },
+  { label: "Log Out", icon: LogIn, to: "/login" },
+  
 
 ];
 
@@ -115,6 +129,11 @@ const Dashboard = () => {
   const toggle = (key: keyof typeof settings) =>
     setSettings((s) => ({ ...s, [key]: !s[key] }));
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
   return (
     <div className="flex min-h-screen" style={{ background: "linear-gradient(135deg, #0b0f2a 0%, #0c1344 50%, #080d24 100%)" }}>
       {/* ── Sidebar ── */}
@@ -142,15 +161,47 @@ const Dashboard = () => {
 
           <p className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mt-8 mb-4 px-2">Account</p>
           {accountLinks.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-400 transition-all hover:bg-white/5"
-              activeClassName="bg-blue-600/10 text-white font-medium shadow-[inset_0_0_0_1px_rgba(37,99,235,0.2)]"
-            >
-              <link.icon className="w-4 h-4" />
-              {link.label}
-            </NavLink>
+            link.label === "Log Out" ? (
+              <AlertDialog key={link.label}>
+                <AlertDialogTrigger asChild>
+                  <button
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-400 transition-all hover:bg-white/5"
+                  >
+                    <link.icon className="w-4 h-4" />
+                    {link.label}
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-[#0c1344] border-white/10">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-white">Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription className="text-slate-400">
+                      You will be signed out of your account.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-white/5 text-white border-white/10 hover:bg-white/10">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleLogout}
+                      className="bg-red-500 hover:bg-red-600 text-white"
+                    >
+                      Log Out
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            ) : (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-400 transition-all hover:bg-white/5"
+                activeClassName="bg-blue-600/10 text-white font-medium shadow-[inset_0_0_0_1px_rgba(37,99,235,0.2)]"
+              >
+                <link.icon className="w-4 h-4" />
+                {link.label}
+              </NavLink>
+            )
           ))}
         </nav>
 
