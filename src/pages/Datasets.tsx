@@ -41,28 +41,28 @@ const Datasets = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
+        <nav className="flex h-14 w-full max-w-4xl items-center justify-between rounded-full border border-white/10 bg-black/20 px-6 backdrop-blur-xl transition-all duration-300 hover:bg-black/30">
           <Link to="/" className="flex items-center gap-2">
-            <Database className="h-6 w-6 text-primary" />
-            <span className="font-display text-xl font-bold tracking-tight">FData</span>
+            <Database className="h-5 w-5 text-primary" />
+            <span className="font-display text-lg font-bold tracking-tight">FData</span>
           </Link>
           <div className="flex items-center gap-4">
             <a
               href="https://github.com/forzayt/FData"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               <Github className="h-4 w-4" />
               <span className="hidden sm:inline">Contribute</span>
             </a>
             <Link to="/">
-              <Button variant="ghost" size="sm">Home</Button>
+              <Button variant="ghost" size="sm" className="rounded-full px-4">Home</Button>
             </Link>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
 
       <main className="container mx-auto px-4 pt-24 pb-16">
         {/* Header */}
