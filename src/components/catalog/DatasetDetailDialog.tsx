@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dataset } from "@/data/datasets";
-import { Download, Calendar, Scale, Shield } from "lucide-react";
+import { ExternalLink, Copy, Check, Calendar, Scale, Shield } from "lucide-react";
 
 interface DatasetDetailDialogProps {
   dataset: Dataset | null;
@@ -17,7 +18,15 @@ interface DatasetDetailDialogProps {
 }
 
 const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialogProps) => {
+  const [copied, setCopied] = useState(false);
+
   if (!dataset) return null;
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(dataset.url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -57,10 +66,32 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
           ))}
         </div>
 
-        <Button className="w-full gap-2 bg-primary hover:bg-primary/90">
-          <Download className="h-4 w-4" />
-          Download Dataset
-        </Button>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button 
+            className="flex-1 gap-2 bg-primary hover:bg-primary/90"
+            onClick={() => window.open(dataset.url, "_blank")}
+          >
+            <ExternalLink className="h-4 w-4" />
+            View Dataset
+          </Button>
+          <Button 
+            variant="outline"
+            className="flex-1 gap-2 border-border/50"
+            onClick={copyToClipboard}
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4 text-green-500" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" />
+                Copy Link
+              </>
+            )}
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

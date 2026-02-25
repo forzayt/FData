@@ -8,6 +8,7 @@ export interface Dataset {
   license: string;
   source: string;
   lastUpdated: string;
+  url: string;
 }
 
 export const formats = ["CSV", "JSON"];
@@ -23,5 +24,6 @@ export const datasets: Dataset[] = [
     license: "MIT",
     source: "data.gov.in",
     lastUpdated: "2024-12-15",
+    url: "https://forzayt.github.io/FData/src/data/datasets/India_All_Pincode.csv"
   },
 ];
