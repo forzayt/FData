@@ -14,15 +14,12 @@ const DatasetCard = ({ dataset, onViewDetails }: DatasetCardProps) => {
       <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground">{dataset.description}</p>
 
       <div className="mb-4 flex flex-wrap gap-1.5">
-        {dataset.formats.map((format) => (
-          <span
-            key={format}
-            className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs text-muted-foreground"
-          >
-            <FileText className="h-3 w-3" />
-            {format}
-          </span>
-        ))}
+        <span
+          className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs text-muted-foreground"
+        >
+          <FileText className="h-3 w-3" />
+          {dataset.url.split('.').pop()?.toUpperCase() || 'DATA'}
+        </span>
       </div>
 
       <div className="flex items-center justify-between border-t border-border/50 pt-4">

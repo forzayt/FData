@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Database, Search, X, Github, User, LogOut } from "lucide-react";
+import { Database, Search, X, Github, User, LogOut, LayoutDashboard } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -59,7 +59,8 @@ const Datasets = () => {
         d.name.toLowerCase().includes(search.toLowerCase()) ||
         d.description.toLowerCase().includes(search.toLowerCase());
       const matchesFormat =
-        selectedFormats.length === 0 || selectedFormats.some((f) => d.formats.includes(f));
+        selectedFormats.length === 0 || 
+        selectedFormats.some((f) => d.url.toLowerCase().endsWith(f.toLowerCase()));
       return matchesSearch && matchesFormat;
     });
   }, [search, selectedFormats]);
@@ -84,13 +85,62 @@ const Datasets = () => {
             <span className="font-display text-lg font-bold tracking-tight">FData</span>
           </Link>
           <div className="flex items-center gap-4">
-            
             <Link to="/">
-              <Button variant="ghost" size="sm" className="rounded-full px-4">Home</Button>
+              <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Home</Button>
             </Link>
 
-          
-           
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full border border-white/10 p-0 overflow-hidden hover:bg-white/5">
+                    <Avatar className="h-full w-full">
+                      <AvatarImage src={user.user_metadata?.avatar_url} />
+                      <AvatarFallback className="bg-blue-600 text-white text-[10px]">
+                        {user.email?.substring(0, 2).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 bg-slate-900 border-white/10 text-white">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user.user_metadata?.full_name || 'User'}</p>
+                      <p className="text-xs leading-none text-slate-400">{user.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-white/5" />
+                  <DropdownMenuItem asChild className="focus:bg-white/5 focus:text-white cursor-pointer">
+                    <Link to="/dashboard" className="flex items-center gap-2 w-full">
+                      <LayoutDashboard className="w-4 h-4" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="focus:bg-white/5 focus:text-white cursor-pointer">
+                    <Link to="/profile" className="flex items-center gap-2 w-full">
+                      <User className="w-4 h-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-white/5" />
+                  <DropdownMenuItem 
+                    onClick={handleLogout}
+                    className="focus:bg-red-500/10 focus:text-red-500 text-red-500 cursor-pointer"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                onClick={handleLogin}
+                variant="default" 
+                size="sm" 
+                className="rounded-full px-5 bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-lg shadow-blue-600/20"
+              >
+                Log In
+              </Button>
+            )}
           </div>
         </nav>
       </div>

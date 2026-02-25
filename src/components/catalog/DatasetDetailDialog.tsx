@@ -89,7 +89,7 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
         <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto border-border/50 bg-card">
           <DialogHeader>
             <DialogTitle className="font-display text-2xl">{dataset.name}</DialogTitle>
-            <DialogDescription className="text-base">{dataset.fullDescription}</DialogDescription>
+            <DialogDescription className="text-base">{dataset.description}</DialogDescription>
           </DialogHeader>
 
           {/* Metadata grid */}
@@ -114,13 +114,11 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
             Source: {dataset.source}
           </div>
 
-          {/* Formats */}
+          {/* Format */}
           <div className="flex flex-wrap gap-2">
-            {dataset.formats.map((format) => (
-              <Badge key={format} variant="outline" className="text-xs">
-                {format}
-              </Badge>
-            ))}
+            <Badge variant="outline" className="text-xs">
+              {dataset.url.split('.').pop()?.toUpperCase() || 'DATA'}
+            </Badge>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">

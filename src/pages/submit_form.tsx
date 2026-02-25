@@ -208,37 +208,8 @@ const SubmitDataset = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
                   <div className="space-y-2">
-                    <Label htmlFor="category" className="text-slate-200">Category</Label>
-                    <Select>
-                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                        <SelectValue placeholder="Select a category" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-slate-900 border-white/10 text-white">
-                        <SelectItem value="science">Science & Technology</SelectItem>
-                        <SelectItem value="finance">Finance & Economics</SelectItem>
-                        <SelectItem value="health">Health & Medicine</SelectItem>
-                        <SelectItem value="environment">Environment</SelectItem>
-                        <SelectItem value="social">Social Sciences</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="format" className="text-slate-200">Format</Label>
-                    <Select required>
-                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                        <SelectValue placeholder="Select format" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-slate-900 border-white/10 text-white">
-                        <SelectItem value="CSV">CSV</SelectItem>
-                        <SelectItem value="JSON">JSON</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
                   <Label htmlFor="url" className="text-slate-200">Dataset URL (GitHub/External)</Label>
                   <div className="relative">
                     <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
@@ -269,6 +240,7 @@ const SubmitDataset = () => {
                       className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
                     />
                   </div>
+                </div>
                 </div>
               </CardContent>
             </Card>
