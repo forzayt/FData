@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Dataset } from "@/data/datasets";
-import { Eye, Copy, Check, Calendar, Scale, Shield, Loader2, X, Hash } from "lucide-react";
+import { Eye, Copy, Check, Calendar, Scale, Shield, Loader2, X, Hash, Github, User } from "lucide-react";
 
 interface DatasetDetailDialogProps {
   dataset: Dataset | null;
@@ -98,7 +98,21 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
               { icon: Scale, label: "Size", value: dataset.size },
               { icon: Shield, label: "License", value: dataset.license },
               { icon: Calendar, label: "Updated", value: dataset.lastUpdated },
-          
+              { 
+                icon: User, 
+                label: "Submitter", 
+                value: (
+                  <a 
+                    href={dataset.submitter} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 hover:text-primary transition-colors"
+                  >
+                    {dataset.submitter.split('/').pop()}
+                    <Github className="h-3 w-3" />
+                  </a>
+                )
+              },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="rounded-lg bg-secondary/50 p-3">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
