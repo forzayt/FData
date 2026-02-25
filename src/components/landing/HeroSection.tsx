@@ -42,7 +42,7 @@ const HeroSection = () => {
 
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl">
             Browse high-quality datasets for multiple use cases and domains.
-            Preview, filter, and access data in the format you need.
+            Review, filter, and access data in the format you need.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">

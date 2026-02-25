@@ -9,8 +9,8 @@ const features = [
   },
   {
     icon: BarChart3,
-    title: "Rich Previews",
-    description: "Explore sample data, metadata, and statistics before downloading any dataset.",
+    title: "Rich Metadata",
+    description: "Explore detailed metadata, schemas, and statistics before downloading any dataset.",
   },
   {
     icon: Tags,

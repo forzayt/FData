@@ -9,8 +9,8 @@ const steps = [
   },
   {
     icon: Eye,
-    title: "Preview",
-    description: "View sample data, metadata, and key statistics to evaluate dataset quality and relevance.",
+    title: "Review",
+    description: "View detailed metadata and key statistics to evaluate dataset quality and relevance.",
   },
   {
     icon: Download,

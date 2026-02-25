@@ -7,14 +7,6 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Dataset } from "@/data/datasets";
 import { Download, Calendar, Scale, FileText, Shield } from "lucide-react";
 
@@ -26,8 +18,6 @@ interface DatasetDetailDialogProps {
 
 const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialogProps) => {
   if (!dataset) return null;
-
-  const sampleColumns = dataset.sampleData.length > 0 ? Object.keys(dataset.sampleData[0]) : [];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -66,37 +56,6 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
               {format}
             </Badge>
           ))}
-        </div>
-
-        {/* Sample data */}
-        <div>
-          <h4 className="mb-3 font-display text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-            Sample Data
-          </h4>
-          <div className="rounded-lg border border-border/50 overflow-hidden">
-            <Table>
-              <TableHeader>
-                <TableRow className="border-border/50 hover:bg-transparent">
-                  {sampleColumns.map((col) => (
-                    <TableHead key={col} className="text-xs font-semibold uppercase tracking-wider">
-                      {col}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {dataset.sampleData.map((row, i) => (
-                  <TableRow key={i} className="border-border/50">
-                    {sampleColumns.map((col) => (
-                      <TableCell key={col} className="text-xs">
-                        {String(row[col])}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
         </div>
 
         <Button className="w-full gap-2 bg-primary hover:bg-primary/90">
