@@ -16,6 +16,8 @@ const HeroSection = () => {
           gridScale={0.1}
           scanColor="#00FFFF"    //change to cyan  // the scanner light color
           scanOpacity={0.4}
+          scanDuration={4.0}
+          scanDelay={3.0}
           enablePost
           bloomIntensity={0.6}
           chromaticAberration={0.002}
