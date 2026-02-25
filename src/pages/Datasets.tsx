@@ -6,13 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import DatasetCard from "@/components/catalog/DatasetCard";
 import DatasetDetailDialog from "@/components/catalog/DatasetDetailDialog";
-import { datasets, categories, formats as allFormats, Dataset } from "@/data/datasets";
+import { datasets, formats as allFormats, Dataset } from "@/data/datasets";
 
 const ITEMS_PER_PAGE = 9;
 
 const Datasets = () => {
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [detailDataset, setDetailDataset] = useState<Dataset | null>(null);
@@ -22,14 +21,12 @@ const Datasets = () => {
       const matchesSearch =
         !search ||
         d.name.toLowerCase().includes(search.toLowerCase()) ||
-        d.description.toLowerCase().includes(search.toLowerCase()) ||
-        d.category.toLowerCase().includes(search.toLowerCase());
-      const matchesCategory = selectedCategory === "All" || d.category === selectedCategory;
+        d.description.toLowerCase().includes(search.toLowerCase());
       const matchesFormat =
         selectedFormats.length === 0 || selectedFormats.some((f) => d.formats.includes(f));
-      return matchesSearch && matchesCategory && matchesFormat;
+      return matchesSearch && matchesFormat;
     });
-  }, [search, selectedCategory, selectedFormats]);
+  }, [search, selectedFormats]);
 
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
   const paginated = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
@@ -61,7 +58,7 @@ const Datasets = () => {
         <div className="mb-8">
           <h1 className="mb-2 font-display text-4xl font-bold tracking-tight">Dataset Catalog</h1>
           <p className="text-muted-foreground">
-            Browse {datasets.length} curated datasets across {categories.length - 1} categories.
+            Browse {datasets.length} curated datasets.
           </p>
         </div>
 
@@ -69,7 +66,7 @@ const Datasets = () => {
         <div className="relative mb-6">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search datasets by name, description, or category..."
+            placeholder="Search datasets by name or description..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             className="pl-10 bg-secondary/50 border-border/50"
@@ -83,24 +80,6 @@ const Datasets = () => {
 
         {/* Filters */}
         <div className="mb-8 space-y-4">
-          <div>
-            <span className="mr-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</span>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => { setSelectedCategory(cat); setPage(1); }}
-                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                    selectedCategory === cat
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
           <div>
             <span className="mr-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Format</span>
             <div className="mt-2 flex flex-wrap gap-2">

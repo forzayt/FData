@@ -41,7 +41,7 @@ const HeroSection = () => {
           </h1>
 
           <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl">
-            Browse curated datasets across finance, healthcare, NLP, computer vision, and more.
+            Browse high-quality datasets for multiple use cases and domains.
             Preview, filter, and access data in the format you need.
           </p>
 
@@ -69,7 +69,7 @@ const HeroSection = () => {
         >
           {[
             { value: "15+", label: "Datasets" },
-            { value: "10+", label: "Categories" },
+            { value: "50+", label: "Sources" },
             { value: "1B+", label: "Total Rows" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">

@@ -33,9 +33,6 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto border-border/50 bg-card">
         <DialogHeader>
-          <div className="flex items-center gap-2">
-            <Badge className="bg-primary/15 text-primary border-0">{dataset.category}</Badge>
-          </div>
           <DialogTitle className="font-display text-2xl">{dataset.name}</DialogTitle>
           <DialogDescription className="text-base">{dataset.fullDescription}</DialogDescription>
         </DialogHeader>

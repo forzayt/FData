@@ -12,9 +12,6 @@ const DatasetCard = ({ dataset, onViewDetails }: DatasetCardProps) => {
   return (
     <div className="glass-card gradient-border group flex flex-col p-6 transition-all duration-300 hover:-translate-y-1">
       <div className="mb-3 flex items-start justify-between">
-        <Badge className="bg-primary/15 text-primary border-0 text-xs">
-          {dataset.category}
-        </Badge>
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <Database className="h-3 w-3" />
           {dataset.rows} rows

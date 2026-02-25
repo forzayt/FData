@@ -5,7 +5,7 @@ const features = [
   {
     icon: Search,
     title: "Powerful Search",
-    description: "Find datasets by category, format, or keyword with instant filtering and smart results.",
+    description: "Find datasets by format or keyword with instant filtering and smart results.",
   },
   {
     icon: BarChart3,
@@ -14,8 +14,8 @@ const features = [
   },
   {
     icon: Tags,
-    title: "Organized Categories",
-    description: "Browse datasets by domain — Finance, Healthcare, NLP, Computer Vision, and more.",
+    title: "Curated Content",
+    description: "Browse datasets across multiple domains, curated for quality and relevance.",
   },
   {
     icon: Zap,
