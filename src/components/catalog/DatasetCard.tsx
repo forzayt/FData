@@ -1,6 +1,5 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Database, FileText, ArrowRight } from "lucide-react";
+import { FileText, ArrowRight } from "lucide-react";
 import { Dataset } from "@/data/datasets";
 
 interface DatasetCardProps {
@@ -11,13 +10,6 @@ interface DatasetCardProps {
 const DatasetCard = ({ dataset, onViewDetails }: DatasetCardProps) => {
   return (
     <div className="glass-card gradient-border group flex flex-col p-6 transition-all duration-300 hover:-translate-y-1">
-      <div className="mb-3 flex items-start justify-between">
-        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-          <Database className="h-3 w-3" />
-          {dataset.rows} rows
-        </div>
-      </div>
-
       <h3 className="mb-2 font-display text-lg font-semibold leading-tight">{dataset.name}</h3>
       <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground">{dataset.description}</p>
 

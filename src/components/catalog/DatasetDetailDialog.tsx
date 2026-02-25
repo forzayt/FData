@@ -8,7 +8,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dataset } from "@/data/datasets";
-import { Download, Calendar, Scale, FileText, Shield } from "lucide-react";
+import { Download, Calendar, Scale, Shield } from "lucide-react";
 
 interface DatasetDetailDialogProps {
   dataset: Dataset | null;
@@ -28,10 +28,9 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
         </DialogHeader>
 
         {/* Metadata grid */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {[
             { icon: Scale, label: "Size", value: dataset.size },
-            { icon: FileText, label: "Rows", value: dataset.rows },
             { icon: Shield, label: "License", value: dataset.license },
             { icon: Calendar, label: "Updated", value: dataset.lastUpdated },
           ].map(({ icon: Icon, label, value }) => (

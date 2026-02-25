@@ -65,12 +65,11 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mx-auto mt-20 grid max-w-3xl grid-cols-3 gap-8"
+          className="mx-auto mt-20 grid max-w-2xl grid-cols-2 gap-8"
         >
           {[
             { value: "15+", label: "Datasets" },
             { value: "50+", label: "Sources" },
-            { value: "1B+", label: "Total Rows" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="font-display text-3xl font-bold gradient-text md:text-4xl">{stat.value}</div>
