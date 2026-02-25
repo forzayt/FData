@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Dataset } from "@/data/datasets";
-import { Eye, Copy, Check, Calendar, Scale, Shield, Loader2, X } from "lucide-react";
+import { Eye, Copy, Check, Calendar, Scale, Shield, Loader2, X, Hash } from "lucide-react";
 
 interface DatasetDetailDialogProps {
   dataset: Dataset | null;
@@ -31,7 +31,15 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
   const [copied, setCopied] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewData, setPreviewData] = useState<any[]>([]);
+  const [rowCount, setRowCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setRowCount(null);
+      setPreviewData([]);
+    }
+  }, [open, dataset]);
 
   if (!dataset) return null;
 
@@ -56,6 +64,7 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
       // Basic CSV parsing
       const lines = text.split("\n").filter(line => line.trim());
       const headers = lines[0].split(",");
+      setRowCount(lines.length - 1);
       const data = lines.slice(1, 11).map(line => {
         const values = line.split(",");
         return headers.reduce((obj: any, header, index) => {
@@ -84,11 +93,12 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
           </DialogHeader>
 
           {/* Metadata grid */}
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
               { icon: Scale, label: "Size", value: dataset.size },
               { icon: Shield, label: "License", value: dataset.license },
               { icon: Calendar, label: "Updated", value: dataset.lastUpdated },
+          
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="rounded-lg bg-secondary/50 p-3">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -149,7 +159,9 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
             <div className="flex items-center justify-between">
               <div>
                 <DialogTitle className="font-display text-xl">{dataset.name} - Data Preview</DialogTitle>
-                <DialogDescription>Showing first 10 rows of the dataset</DialogDescription>
+                <DialogDescription>
+                  Showing first 10 rows {rowCount !== null && `out of ${rowCount.toLocaleString()} total rows`}
+                </DialogDescription>
               </div>
             </div>
           </DialogHeader>
