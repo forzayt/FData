@@ -7,7 +7,6 @@ import Index from "./pages/Index";
 import Datasets from "./pages/Datasets";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +20,6 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/datasets" element={<Datasets />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
