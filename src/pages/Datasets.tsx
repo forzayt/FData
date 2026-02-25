@@ -1,12 +1,22 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Database, Search, X, Github, User } from "lucide-react";
+import { Database, Search, X, Github, User, LogOut } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import DatasetCard from "@/components/catalog/DatasetCard";
 import DatasetDetailDialog from "@/components/catalog/DatasetDetailDialog";
 import { datasets, formats as allFormats, Dataset } from "@/data/datasets";
+import { supabase } from "@/lib/supabase";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -15,6 +25,32 @@ const Datasets = () => {
   const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [detailDataset, setDetailDataset] = useState<Dataset | null>(null);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: {
+        redirectTo: window.location.origin + "/datasets",
+      },
+    });
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
 
   const filtered = useMemo(() => {
     return datasets.filter((d) => {
@@ -60,9 +96,41 @@ const Datasets = () => {
             <Link to="/">
               <Button variant="ghost" size="sm" className="rounded-full px-4">Home</Button>
             </Link>
-            <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
-              <User className="h-5 w-5" />
-            </Button>
+
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user?.user_metadata?.avatar_url} />
+                      <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56 rounded-2xl border-white/10 bg-black/80 backdrop-blur-xl text-foreground">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">{user?.user_metadata?.full_name || user?.email}</p>
+                      <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-white/10" />
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={handleLogin}
+                className="rounded-full text-muted-foreground hover:text-foreground"
+              >
+                <User className="h-5 w-5" />
+              </Button>
+            )}
           </div>
         </nav>
       </div>
