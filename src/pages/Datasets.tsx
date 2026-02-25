@@ -84,53 +84,13 @@ const Datasets = () => {
             <span className="font-display text-lg font-bold tracking-tight">FData</span>
           </Link>
           <div className="flex items-center gap-4">
-            <a
-              href="https://github.com/forzayt/FData"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <Github className="h-4 w-4" />
-              <span className="hidden sm:inline">Contribute</span>
-            </a>
+            
             <Link to="/">
               <Button variant="ghost" size="sm" className="rounded-full px-4">Home</Button>
             </Link>
 
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.user_metadata?.avatar_url} />
-                      <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 rounded-2xl border-white/10 bg-black/80 backdrop-blur-xl text-foreground">
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user?.user_metadata?.full_name || user?.email}</p>
-                      <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-white/10" />
-                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={handleLogin}
-                className="rounded-full text-muted-foreground hover:text-foreground"
-              >
-                <User className="h-5 w-5" />
-              </Button>
-            )}
+          
+           
           </div>
         </nav>
       </div>
