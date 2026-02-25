@@ -9,10 +9,6 @@ import {
   UserPlus,
   Activity,
   Zap,
-  MapPin,
-  Twitter,
-  Facebook,
-  Instagram,
   ChevronRight,
   Car,
   Database,
@@ -28,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { NavLink } from "@/components/NavLink";
+import Profile from "./Profile";
 import { supabase } from "@/lib/supabase";
 import { useEffect, useState } from "react";
 
@@ -124,7 +121,7 @@ const Dashboard = () => {
       <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-900/50 backdrop-blur-xl border-r border-white/5 p-6 flex flex-col z-40">
         <div className="flex items-center gap-3 mb-10 px-2">
           <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-            <Zap className="w-5 h-5 text-white fill-white" />
+            <Database className="h-5 w-5 text-primary fill-white" />
           </div>
           <span className="text-white font-bold text-lg tracking-tight">FData</span>
         </div>
@@ -173,50 +170,9 @@ const Dashboard = () => {
       {/* ── Main content ── */}
       <div className="ml-64 flex-1 flex flex-col min-h-screen">
         {/* Page content */}
-        <main className="flex-1 px-8 py-6 flex flex-col items-center">
-          <div className="w-full max-w-2xl">
-            {/* Profile Informations */}
-            <div
-              id="profile-info"
-              className="rounded-2xl p-6 scroll-mt-6"
-              style={{ background: "rgba(15,22,55,0.7)", border: "1px solid rgba(255,255,255,0.06)" }}
-            >
-              <p className="text-white font-semibold text-lg mb-4">Profile Information</p>
-              <p className="text-slate-400 text-sm mb-6 leading-relaxed">
-                Hi, I'm {user?.user_metadata?.full_name || "Guest"}. Decisions: If you can't decide, the answer is no.
-                If two equally difficult paths, choose the one more painful in the short term.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 text-sm">
-                  <span className="text-slate-400 min-w-[100px]">Full Name:</span>
-                  <span className="text-white font-medium">{user?.user_metadata?.full_name || "Guest User"}</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <span className="text-slate-400 min-w-[100px]">Mobile:</span>
-                  <span className="text-white font-medium">(44) 123 1234 123</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <span className="text-slate-400 min-w-[100px]">Email:</span>
-                  <span className="text-blue-400 font-medium">{user?.email || "guest@example.com"}</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <span className="text-slate-400 min-w-[100px]">Location:</span>
-                  <span className="text-white font-medium flex items-center gap-1">
-                    <MapPin className="w-4 h-4" />
-                    United States
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <span className="text-slate-400 min-w-[100px]">Social Media:</span>
-                  <div className="flex gap-4">
-                    <Facebook className="w-4 h-4 text-blue-400 cursor-pointer hover:text-blue-300 transition-colors" />
-                    <Twitter className="w-4 h-4 text-sky-400 cursor-pointer hover:text-sky-300 transition-colors" />
-                    <Instagram className="w-4 h-4 text-pink-400 cursor-pointer hover:text-pink-300 transition-colors" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <main className="flex-1 px-8 py-6 flex flex-col">
+          {/* Profile Informations */}
+          <Profile user={user} />
         </main>
       </div>
     </div>
