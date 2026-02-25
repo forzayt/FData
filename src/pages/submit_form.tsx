@@ -59,14 +59,29 @@ const SubmitDataset = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPublic, setIsPublic] = useState(true);
+  const [url, setUrl] = useState("");
+  const [urlError, setUrlError] = useState("");
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate("/");
   };
 
+  const validateUrl = (value: string) => {
+    setUrl(value);
+    if (value && !value.toLowerCase().endsWith(".csv") && !value.toLowerCase().endsWith(".json")) {
+      setUrlError("URL must end with .csv or .json");
+    } else {
+      setUrlError("");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (urlError) {
+      toast.error("Please fix the errors before submitting.");
+      return;
+    }
     setIsSubmitting(true);
     
     // Simulate API call
@@ -140,7 +155,7 @@ const SubmitDataset = () => {
 
       {/* ── Main content ── */}
       <div className="ml-64 flex-1 flex flex-col min-h-screen overflow-y-auto">
-        <header className="px-8 py-6 flex items-center justify-between border-b border-white/5 bg-slate-900/20 backdrop-blur-sm sticky top-0 z-30">
+        {/* <header className="px-8 py-6 flex items-center justify-between border-b border-white/5 bg-slate-900/20 backdrop-blur-sm sticky top-0 z-30">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
@@ -155,7 +170,7 @@ const SubmitDataset = () => {
               <p className="text-sm text-slate-400">Share your data with the community</p>
             </div>
           </div>
-        </header>
+        </header> */}
 
         <main className="flex-1 px-8 py-10 max-w-4xl mx-auto w-full">
           <form onSubmit={handleSubmit} className="space-y-8">
@@ -210,15 +225,49 @@ const SubmitDataset = () => {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="tags" className="text-slate-200">Tags</Label>
-                    <div className="relative">
-                      <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                      <Input
-                        id="tags"
-                        placeholder="csv, climate, global"
-                        className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
-                      />
-                    </div>
+                    <Label htmlFor="format" className="text-slate-200">Format</Label>
+                    <Select required>
+                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
+                        <SelectValue placeholder="Select format" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-900 border-white/10 text-white">
+                        <SelectItem value="CSV">CSV</SelectItem>
+                        <SelectItem value="JSON">JSON</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="url" className="text-slate-200">Dataset URL (GitHub/External)</Label>
+                  <div className="relative">
+                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Input
+                      id="url"
+                      type="url"
+                      value={url}
+                      onChange={(e) => validateUrl(e.target.value)}
+                      placeholder="https://github.com/user/repo/data.csv"
+                      className={`pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-blue-500/50 focus:ring-blue-500/20 ${urlError ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20' : ''}`}
+                      required
+                    />
+                  </div>
+                  {urlError ? (
+                    <p className="text-xs text-red-400 mt-1">{urlError}</p>
+                  ) : (
+                    <p className="text-xs text-slate-500 mt-1">Hint: URL must end with .csv or .json</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="tags" className="text-slate-200">Tags</Label>
+                  <div className="relative">
+                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Input
+                      id="tags"
+                      placeholder="csv, climate, global"
+                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                    />
                   </div>
                 </div>
               </CardContent>
@@ -232,7 +281,7 @@ const SubmitDataset = () => {
                 </div>
                 <CardTitle className="text-2xl text-white">Data Files</CardTitle>
                 <CardDescription className="text-slate-400">
-                  Upload your data files. Supported formats: CSV, JSON, Parquet.
+                  Upload your data files. Supported formats: CSV, JSON.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -241,7 +290,7 @@ const SubmitDataset = () => {
                     <Upload className="w-6 h-6 text-blue-500" />
                   </div>
                   <p className="text-white font-medium mb-1">Click to upload or drag and drop</p>
-                  <p className="text-slate-500 text-sm">Max file size: 50MB</p>
+                  <p className="text-slate-500 text-sm">Max file size: 100MB</p>
                 </div>
               </CardContent>
             </Card>
