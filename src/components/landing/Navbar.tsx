@@ -56,6 +56,18 @@ const Navbar = () => {
           <a href="#how-it-works" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             How It Works
           </a>
+          <Link
+            to="/dashboard"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Dashboard
+          </Link>
+          <Link
+            to="/profile"
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Profile
+          </Link>
           <a
             href="https://github.com/forzayt/FData"
             target="_blank"
