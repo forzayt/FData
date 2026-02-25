@@ -49,17 +49,25 @@
     --sidebar-border: 230 20% 18%;
     --sidebar-ring: 260 80% 60%;
   }
-}
 
-@layer base {
+  @layer base {
   * {
     @apply border-border;
+  }
+
+  html {
+    scrollbar-gutter: stable;
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
   }
+}
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;

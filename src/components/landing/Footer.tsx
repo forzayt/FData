@@ -16,7 +16,7 @@ const Footer = () => {
             <a href="#how-it-works" className="transition-colors hover:text-foreground">How It Works</a>
           </div>
           <p className="text-sm text-muted-foreground">
-            © 2025 FData. All rights reserved.
+            © 2026 FData. All rights reserved.
           </p>
         </div>
       </div>

@@ -21,7 +21,7 @@ const steps = [
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="relative py-32">
+    <section id="how-it-works" className="relative overflow-hidden py-32">
       <div className="pointer-events-none absolute left-0 bottom-0 h-[400px] w-[400px] animate-aurora rounded-full bg-glow-teal/10 blur-[150px]" />
 
       <div className="container mx-auto px-4">
