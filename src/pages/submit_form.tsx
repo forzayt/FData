@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Database,
@@ -15,6 +15,8 @@ import {
   CheckCircle2,
   FileCode,
   Link2,
+  X,
+  FileIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,6 +68,49 @@ const SubmitDataset = () => {
   const [urlError, setUrlError] = useState("");
   const [sourceType, setSourceType] = useState<"url" | "upload">("url");
   const [submitterUrl, setSubmitterUrl] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      if (selectedFile.size > 100 * 1024 * 1024) {
+        toast.error("File size exceeds 100MB limit.");
+        return;
+      }
+      setFile(selectedFile);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const droppedFile = e.dataTransfer.files?.[0];
+    if (droppedFile) {
+      if (droppedFile.size > 100 * 1024 * 1024) {
+        toast.error("File size exceeds 100MB limit.");
+        return;
+      }
+      setFile(droppedFile);
+    }
+  };
+
+  const removeFile = () => {
+    setFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -106,6 +151,12 @@ const SubmitDataset = () => {
       toast.error("Please fix the errors before submitting.");
       return;
     }
+    
+    if (sourceType === "upload" && !file) {
+      toast.error("Please select a file to upload.");
+      return;
+    }
+
     setIsSubmitting(true);
     
     // Simulate API call
@@ -222,6 +273,7 @@ const SubmitDataset = () => {
                       id="size"
                       placeholder="100MB"
                       className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                      required
                     />
                   </div>
                 </div>
@@ -253,51 +305,94 @@ const SubmitDataset = () => {
                   </TabsList>
                   
                   <TabsContent value="url" className="space-y-4 focus-visible:outline-none focus-visible:ring-0">
-                    <div className="space-y-2">
-                      <Label htmlFor="url" className="text-slate-200">Dataset URL (GitHub/External)</Label>
-                      <div className="relative">
-                        <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                        <Input
-                          id="url"
-                          type="url"
-                          value={url}
-                          onChange={(e) => validateUrl(e.target.value)}
-                          placeholder="https://github.com/user/repo/data.csv"
-                          className={`pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-blue-500/50 focus:ring-blue-500/20 ${urlError ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20' : ''}`}
-                          required={sourceType === "url"}
-                        />
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="url" className="text-slate-200">Dataset URL (GitHub/External)</Label>
+                        <div className="relative">
+                          <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                          <Input
+                            id="url"
+                            type="url"
+                            value={url}
+                            onChange={(e) => validateUrl(e.target.value)}
+                            placeholder="https://github.com/user/repo/data.csv"
+                            className={`pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-blue-500/50 focus:ring-blue-500/20 ${urlError ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20' : ''}`}
+                            required={sourceType === "url"}
+                          />
+                        </div>
+                        {urlError ? (
+                          <p className="text-xs text-red-400 mt-1">{urlError}</p>
+                        ) : (
+                          <p className="text-xs text-slate-500 mt-1">Hint: URL must end with .csv or .json</p>
+                        )}
                       </div>
-                      {urlError ? (
-                        <p className="text-xs text-red-400 mt-1">{urlError}</p>
-                      ) : (
-                        <p className="text-xs text-slate-500 mt-1">Hint: URL must end with .csv or .json</p>
-                      )}
+
+                      <div className="space-y-2">
+                        <Label htmlFor="source" className="text-slate-200">Dataset Source</Label>
+                        <div className="relative">
+                          <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                          <Input
+                          id="source"
+                          placeholder="e.g. Kaggle, UCI, Research Project"
+                          className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                          required
+                        />
+                        </div>
+                      </div>
                     </div>
-
-                    <div className="space-y-2">
-
-
-
-                  <Label htmlFor="source" className="text-slate-200">Dataset Source</Label>
-                  <div className="relative">
-                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <Input
-                      id="source"
-                      placeholder="From where the dataset is taken (e.g., public dataset, Training data, etc.)"
-                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
-                    />
-                  </div>
-                </div>
                   </TabsContent>
                   
                   <TabsContent value="upload" className="focus-visible:outline-none focus-visible:ring-0">
-                    <div className="border-2 border-dashed border-white/10 rounded-2xl p-10 flex flex-col items-center justify-center bg-white/[0.02] hover:bg-white/[0.04] transition-colors cursor-pointer group">
-                      <div className="w-12 h-12 rounded-full bg-blue-600/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <Upload className="w-6 h-6 text-blue-500" />
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      className="hidden"
+                      accept=".csv,.json"
+                    />
+                    
+                    {!file ? (
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center transition-all cursor-pointer group ${
+                          isDragging 
+                            ? "border-blue-500 bg-blue-600/10 scale-[1.02]" 
+                            : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20"
+                        }`}
+                      >
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110 ${
+                          isDragging ? "bg-blue-600 text-white" : "bg-blue-600/10 text-blue-500"
+                        }`}>
+                          <Upload className="w-6 h-6" />
+                        </div>
+                        <p className="text-white font-medium mb-1">Click to upload or drag and drop</p>
+                        <p className="text-slate-500 text-sm">Max file size: 100MB (Supported: CSV, JSON)</p>
                       </div>
-                      <p className="text-white font-medium mb-1">Click to upload or drag and drop</p>
-                      <p className="text-slate-500 text-sm">Max file size: 100MB (Supported: CSV, JSON)</p>
-                    </div>
+                    ) : (
+                      <div className="border border-white/10 rounded-2xl p-6 bg-white/[0.02] flex items-center justify-between group">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-xl bg-blue-600/10 flex items-center justify-center">
+                            <FileIcon className="w-6 h-6 text-blue-500" />
+                          </div>
+                          <div>
+                            <p className="text-white font-medium truncate max-w-[200px] sm:max-w-xs">{file.name}</p>
+                            <p className="text-slate-500 text-xs">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={removeFile}
+                          className="text-slate-500 hover:text-red-400 hover:bg-red-400/10 rounded-full"
+                        >
+                          <X className="w-5 h-5" />
+                        </Button>
+                      </div>
+                    )}
                   </TabsContent>
                 </Tabs>
               </CardContent>
