@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Database, Github } from "lucide-react";
+import { Database, Github, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -32,9 +32,12 @@ const Navbar = () => {
               Explore
             </Button>
           </Link>
+          <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
+            <User className="h-5 w-5" />
+          </Button>
         </div>
 
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex items-center gap-3 md:hidden">
           <a
             href="https://github.com/forzayt/FData"
             target="_blank"
@@ -48,6 +51,9 @@ const Navbar = () => {
               Explore
             </Button>
           </Link>
+          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground">
+            <User className="h-5 w-5" />
+          </Button>
         </div>
       </nav>
     </div>

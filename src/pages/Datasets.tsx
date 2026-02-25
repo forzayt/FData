@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Database, Search, X, Github } from "lucide-react";
+import { Database, Search, X, Github, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -60,6 +60,9 @@ const Datasets = () => {
             <Link to="/">
               <Button variant="ghost" size="sm" className="rounded-full px-4">Home</Button>
             </Link>
+            <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:text-foreground">
+              <User className="h-5 w-5" />
+            </Button>
           </div>
         </nav>
       </div>
