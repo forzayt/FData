@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Database } from "lucide-react";
+import { Database, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
@@ -18,6 +18,15 @@ const Navbar = () => {
           <a href="#how-it-works" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
             How It Works
           </a>
+          <a
+            href="https://github.com/forzayt/FData"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Github className="h-4 w-4" />
+            Contribute
+          </a>
           <Link to="/datasets">
             <Button size="sm" className="bg-primary hover:bg-primary/90">
               Explore Datasets
@@ -25,11 +34,21 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <Link to="/datasets" className="md:hidden">
-          <Button size="sm" className="bg-primary hover:bg-primary/90">
-            Explore
-          </Button>
-        </Link>
+        <div className="flex items-center gap-4 md:hidden">
+          <a
+            href="https://github.com/forzayt/FData"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <Github className="h-5 w-5" />
+          </a>
+          <Link to="/datasets">
+            <Button size="sm" className="bg-primary hover:bg-primary/90">
+              Explore
+            </Button>
+          </Link>
+        </div>
       </div>
     </nav>
   );

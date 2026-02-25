@@ -40,8 +40,8 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
     setCopied(true);
     toast({
       title: "URL Copied",
-      description: "Just use get method on the copied URL to access the dataset!",
-      duration: 3000,
+      description: "Just use 'GET' method on the copied URL to access the dataset!",
+      duration: 4000,
     });
     setTimeout(() => setCopied(false), 2000);
   };

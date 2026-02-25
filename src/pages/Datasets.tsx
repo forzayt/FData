@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Database, Search, X } from "lucide-react";
+import { Database, Search, X, Github } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -47,9 +47,20 @@ const Datasets = () => {
             <Database className="h-6 w-6 text-primary" />
             <span className="font-display text-xl font-bold tracking-tight">FData</span>
           </Link>
-          <Link to="/">
-            <Button variant="ghost" size="sm">Home</Button>
-          </Link>
+          <div className="flex items-center gap-4">
+            <a
+              href="https://github.com/forzayt/FData"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Github className="h-4 w-4" />
+              <span className="hidden sm:inline">Contribute</span>
+            </a>
+            <Link to="/">
+              <Button variant="ghost" size="sm">Home</Button>
+            </Link>
+          </div>
         </div>
       </nav>
 
