@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Database,
@@ -65,6 +65,26 @@ const SubmitDataset = () => {
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState("");
   const [sourceType, setSourceType] = useState<"url" | "upload">("url");
+  const [submitterUrl, setSubmitterUrl] = useState("");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        // Try to get GitHub URL from user metadata
+        const githubUrl = user.user_metadata?.full_name 
+          ? `https://github.com/${user.user_metadata.preferred_username || user.user_metadata.user_name}`
+          : "";
+        
+        // If preferred_username or user_name isn't there, we might need to check provider_id
+        const username = user.user_metadata?.preferred_username || user.user_metadata?.user_name;
+        if (username) {
+          setSubmitterUrl(`https://github.com/${username}`);
+        }
+      }
+    };
+    fetchUser();
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -195,12 +215,12 @@ const SubmitDataset = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="tags" className="text-slate-200">Tags</Label>
+                  <Label htmlFor="size" className="text-slate-200">Size</Label>
                   <div className="relative">
                     <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                     <Input
-                      id="tags"
-                      placeholder="csv, climate, global"
+                      id="size"
+                      placeholder="100MB"
                       className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
                     />
                   </div>
@@ -253,6 +273,21 @@ const SubmitDataset = () => {
                         <p className="text-xs text-slate-500 mt-1">Hint: URL must end with .csv or .json</p>
                       )}
                     </div>
+
+                    <div className="space-y-2">
+
+
+
+                  <Label htmlFor="source" className="text-slate-200">Dataset Source</Label>
+                  <div className="relative">
+                    <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Input
+                      id="source"
+                      placeholder="From where the dataset is taken (e.g., public dataset, Training data, etc.)"
+                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                    />
+                  </div>
+                </div>
                   </TabsContent>
                   
                   <TabsContent value="upload" className="focus-visible:outline-none focus-visible:ring-0">
@@ -277,21 +312,23 @@ const SubmitDataset = () => {
                 <CardTitle className="text-2xl text-white">Settings</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
-                  <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-lg ${isPublic ? 'bg-emerald-500/10' : 'bg-slate-500/10'}`}>
-                      {isPublic ? <Globe className="w-5 h-5 text-emerald-500" /> : <Lock className="w-5 h-5 text-slate-500" />}
-                    </div>
-                    <div>
-                      <p className="text-white font-medium">Public Dataset</p>
-                      <p className="text-xs text-slate-400">Anyone can view and download this dataset</p>
-                    </div>
+                <div className="space-y-2">
+                  <Label htmlFor="submitter" className="text-slate-200">Submitted By </Label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                    <Input
+                      id="submitter"
+                      value={submitterUrl}
+                      readOnly
+                      placeholder="https://github.com/username"
+                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 cursor-not-allowed opacity-70"
+                      required
+                    />
                   </div>
-                  <Switch
-                    checked={isPublic}
-                    onCheckedChange={setIsPublic}
-                  />
+                  <p className="text-[10px] text-slate-500">Automatically fetched from your profile</p>
                 </div>
+
+              
 
                 <div className="space-y-2">
                   <Label className="text-slate-200">License</Label>
@@ -303,7 +340,7 @@ const SubmitDataset = () => {
                       <SelectItem value="mit">MIT License</SelectItem>
                       <SelectItem value="cc0">Creative Commons (CC0)</SelectItem>
                       <SelectItem value="apache">Apache 2.0</SelectItem>
-                      <SelectItem value="other">Custom License</SelectItem>
+      
                     </SelectContent>
                   </Select>
                 </div>
