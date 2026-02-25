@@ -8,6 +8,7 @@ import Datasets from "./pages/Datasets";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import SubmitDataset from "./pages/submit_form";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/datasets" element={<Datasets />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/submit-dataset" element={<SubmitDataset />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

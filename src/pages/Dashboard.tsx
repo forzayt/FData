@@ -46,9 +46,7 @@ const sidebarLinks = [
 const accountLinks = [
   { label: "Home", icon: LayoutDashboard, to: "/" },
   { label: "Profile", icon: User, to: "#profile-info" },
-  { label: "Log Out", icon: LogIn, to: "/login" },
-  
-
+  { label: "Submit a dataset", icon: UserPlus, to: "/submit-dataset" },
 ];
 
 
@@ -161,61 +159,49 @@ const Dashboard = () => {
 
           <p className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold mt-8 mb-4 px-2">Account</p>
           {accountLinks.map((link) => (
-            link.label === "Log Out" ? (
-              <AlertDialog key={link.label}>
-                <AlertDialogTrigger asChild>
-                  <button
-                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-400 transition-all hover:bg-white/5"
-                  >
-                    <link.icon className="w-4 h-4" />
-                    {link.label}
-                  </button>
-                </AlertDialogTrigger>
-                <AlertDialogContent className="bg-[#0c1344] border-white/10">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle className="text-white">Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription className="text-slate-400">
-                      You will be signed out of your account.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="bg-white/5 text-white border-white/10 hover:bg-white/10">
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={handleLogout}
-                      className="bg-red-500 hover:bg-red-600 text-white"
-                    >
-                      Log Out
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            ) : (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-400 transition-all hover:bg-white/5"
-                activeClassName="bg-blue-600/10 text-white font-medium shadow-[inset_0_0_0_1px_rgba(37,99,235,0.2)]"
-              >
-                <link.icon className="w-4 h-4" />
-                {link.label}
-              </NavLink>
-            )
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-slate-400 transition-all hover:bg-white/5"
+              activeClassName="bg-blue-600/10 text-white font-medium shadow-[inset_0_0_0_1px_rgba(37,99,235,0.2)]"
+            >
+              <link.icon className="w-4 h-4" />
+              {link.label}
+            </NavLink>
           ))}
         </nav>
 
-        {/* Upgrade card */}
-        {/* <div className="mt-auto bg-blue-600/10 border border-blue-500/20 rounded-2xl p-4">
-          <div className="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center mb-3">
-            <Star className="w-4 h-4 text-white fill-white" />
-          </div>
-          <p className="text-white text-xs font-semibold mb-1">Need help?</p>
-          <p className="text-slate-400 text-[10px] mb-3">Please check our documentation</p>
-          <button className="w-full py-2 rounded-xl bg-white text-slate-900 text-[10px] font-bold hover:bg-slate-100 transition-colors">
-            DOCUMENTATION
-          </button>
-        </div> */}
+        <div className="mt-auto pt-4 border-t border-white/5">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-500 transition-all hover:bg-red-500/10 font-medium"
+              >
+                <LogIn className="w-4 h-4" />
+                Log Out
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent className="bg-[#0c1344] border-white/10">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-white">Are you sure?</AlertDialogTitle>
+                <AlertDialogDescription className="text-slate-400">
+                  You will be signed out of your account.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="bg-white/5 text-white border-white/10 hover:bg-white/10">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleLogout}
+                  className="bg-red-500 hover:bg-red-600 text-white"
+                >
+                  Log Out
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </aside>
 
       {/* ── Main content ── */}
