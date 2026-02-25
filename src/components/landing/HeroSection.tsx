@@ -2,10 +2,28 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { GridScan } from "./GridScan";
 
 const HeroSection = () => {
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden pt-16">
+      {/* Interactive Background */}
+      <div className="absolute inset-0 z-0">
+        <GridScan
+          sensitivity={0.55}
+          lineThickness={1}
+          linesColor="#392e4e"
+          gridScale={0.1}
+          scanColor="#FF9FFC"
+          scanOpacity={0.4}
+          enablePost
+          bloomIntensity={0.6}
+          chromaticAberration={0.002}
+          noiseIntensity={0.01}
+          style={{ width: '100%', height: '100%' }}
+        />
+      </div>
+
       {/* Aurora glow effects */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/4 top-1/4 h-[500px] w-[500px] animate-aurora rounded-full bg-glow-purple/20 blur-[120px]" />
