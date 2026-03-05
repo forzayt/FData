@@ -42,11 +42,10 @@ const Datasets = () => {
     return datasets.filter((d) => {
       const matchesSearch =
         !search ||
-        d.name.toLowerCase().includes(search.toLowerCase()) ||
-        d.description.toLowerCase().includes(search.toLowerCase());
+        d.name.toLowerCase().includes(search.toLowerCase());
       const matchesFormat =
         selectedFormats.length === 0 ||
-        selectedFormats.some((f) => d.url.toLowerCase().endsWith(f.toLowerCase()));
+        selectedFormats.some((f) => d.extension.toLowerCase() === f.toLowerCase());
       return matchesSearch && matchesFormat;
     });
   }, [search, selectedFormats]);
@@ -187,7 +186,7 @@ const Datasets = () => {
           <>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {paginated.map((dataset) => (
-                <DatasetCard key={dataset.id} dataset={dataset} onViewDetails={setDetailDataset} />
+                <DatasetCard key={dataset.url} dataset={dataset} onViewDetails={setDetailDataset} />
               ))}
             </div>
 

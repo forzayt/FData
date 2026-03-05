@@ -1,27 +1,24 @@
 export interface Dataset {
-  id: string;
   name: string;
-  description: string;
+  extension: string;
   size: string;
-  license: string;
-  source: string;
-  lastUpdated: string;
   url: string;
-  submitter: string;
 }
 
-export const formats = ["CSV", "JSON"];
+const files = import.meta.glob('./datasets/*.*');
 
-export const datasets: Dataset[] = [
-  {
-    id: "1",
-    name: "All India Pincode Dataset",
-    description: "Dataset containing pincode-wise information for all 6,000+ pincodes in India.",
-    size: "45 MB",
-    license: "MIT",
-    source: "data.gov.in",
-    lastUpdated: "2024-12-15",
-    url: "https://forzayt.github.io/FData/src/data/datasets/India_All_Pincode.csv",
-    submitter: "https://github.com/forzayt"
-  },
-];
+export const datasets: Dataset[] = Object.keys(files).map((filePath) => {
+  const fileNameWithExt = filePath.split('/').pop() || '';
+  const lastDot = fileNameWithExt.lastIndexOf('.');
+  const name = lastDot !== -1 ? fileNameWithExt.substring(0, lastDot) : fileNameWithExt;
+  const extension = lastDot !== -1 ? fileNameWithExt.substring(lastDot + 1) : '';
+
+  return {
+    name: name.replace(/_/g, ' '),
+    extension: extension,
+    size: "Unknown",
+    url: `https://forzayt.github.io/FData/src/data/datasets/${fileNameWithExt}`,
+  };
+});
+
+export const formats = Array.from(new Set(datasets.map(d => d.extension.toUpperCase())));

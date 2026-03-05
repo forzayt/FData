@@ -13,25 +13,14 @@ const DatasetCard = ({ dataset, onViewDetails }: DatasetCardProps) => {
       <div className="mb-2 flex items-center justify-between">
         <h3 className="font-display text-lg font-semibold leading-tight">{dataset.name}</h3>
       </div>
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground line-clamp-2">{dataset.description}</p>
 
       <div className="mb-4 flex flex-wrap gap-1.5 items-center">
         <span
           className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-xs text-muted-foreground"
         >
           <FileText className="h-3 w-3" />
-          {dataset.url.split('.').pop()?.toUpperCase() || 'DATA'}
+          {dataset.extension.toUpperCase() || 'DATA'}
         </span>
-        <a
-          href={dataset.submitter}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[10px] text-muted-foreground flex items-center gap-1 hover:text-primary transition-colors"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <User className="h-2.5 w-2.5" />
-          {dataset.submitter.split('/').pop()}
-        </a>
       </div>
 
       <div className="flex items-center justify-between border-t border-border/50 pt-4">

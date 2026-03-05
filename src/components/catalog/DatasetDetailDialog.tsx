@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Dataset } from "@/data/datasets";
-import { Eye, Copy, Check, Calendar, Scale, Shield, Loader2, X, Hash, Github, User } from "lucide-react";
+import { Eye, Copy, Check, Scale, Loader2, X } from "lucide-react";
 
 interface DatasetDetailDialogProps {
   dataset: Dataset | null;
@@ -60,7 +60,7 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
     try {
       const response = await fetch(dataset.url);
       const text = await response.text();
-      
+
       // Basic CSV parsing
       const lines = text.split("\n").filter(line => line.trim());
       const headers = lines[0].split(",");
@@ -72,7 +72,7 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
           return obj;
         }, {});
       });
-      
+
       setPreviewData(data);
     } catch (error) {
       console.error("Error fetching preview data:", error);
@@ -89,30 +89,12 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
         <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto border-border/50 bg-card">
           <DialogHeader>
             <DialogTitle className="font-display text-2xl">{dataset.name}</DialogTitle>
-            <DialogDescription className="text-base">{dataset.description}</DialogDescription>
           </DialogHeader>
 
           {/* Metadata grid */}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[
               { icon: Scale, label: "Size", value: dataset.size },
-              { icon: Shield, label: "License", value: dataset.license },
-              { icon: Calendar, label: "Updated", value: dataset.lastUpdated },
-              { 
-                icon: User, 
-                label: "Submitter", 
-                value: (
-                  <a 
-                    href={dataset.submitter} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1 hover:text-primary transition-colors"
-                  >
-                    {dataset.submitter.split('/').pop()}
-                    <Github className="h-3 w-3" />
-                  </a>
-                )
-              },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="rounded-lg bg-secondary/50 p-3">
                 <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
@@ -124,26 +106,23 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
             ))}
           </div>
 
-          <div className="text-xs text-muted-foreground">
-            Source: {dataset.source}
-          </div>
 
           {/* Format */}
           <div className="flex flex-wrap gap-2">
             <Badge variant="outline" className="text-xs">
-              {dataset.url.split('.').pop()?.toUpperCase() || 'DATA'}
+              {dataset.extension.toUpperCase() || 'DATA'}
             </Badge>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button 
+            <Button
               className="flex-1 gap-2 bg-primary hover:bg-primary/90"
               onClick={fetchPreviewData}
             >
               <Eye className="h-4 w-4" />
               View Dataset
             </Button>
-            <Button 
+            <Button
               variant="outline"
               className="flex-1 gap-2 border-border/50"
               onClick={copyToClipboard}
@@ -215,7 +194,7 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
               </div>
             )}
           </div>
-          
+
           <div className="mt-4 flex justify-end gap-3">
             <Button variant="outline" onClick={() => setPreviewOpen(false)}>Close</Button>
             {/* <Button onClick={() => window.open(dataset.url, "_blank")}>Download Full CSV</Button> */}
