@@ -8,6 +8,7 @@ import DatasetCard from "@/components/catalog/DatasetCard";
 import DatasetDetailDialog from "@/components/catalog/DatasetDetailDialog";
 import { datasets, formats as allFormats, Dataset } from "@/data/datasets";
 
+import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -64,9 +65,14 @@ const Datasets = () => {
               <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Home</Button>
             </Link>
 
-            <Link to="/">
-              <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Submit Dataset</Button>
-            </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full px-4 text-white hover:bg-white/5"
+              onClick={() => toast("Coming Soon", { description: "Dataset submission is under maintenance." })}
+            >
+              Submit Dataset
+            </Button>
 
             {/* <Link to="/dashboard">
               <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Dashboard</Button>
