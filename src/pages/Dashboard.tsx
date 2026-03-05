@@ -35,9 +35,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { NavLink } from "@/components/NavLink";
-import Profile from "./Profile";
-import { supabase } from "@/lib/supabase";
-import { useEffect, useState } from "react";
+
 
 const sidebarLinks = [
 
@@ -100,42 +98,10 @@ const CircularProgress = ({ value }: { value: number }) => {
 };
 
 const Dashboard = () => {
-  const [user, setUser] = useState<any>(null);
-  const [settings, setSettings] = useState({
-    emailFollow: true,
-    emailAnswer: false,
-    emailMention: true,
-    newLaunches: false,
-    monthlyUpdates: false,
-    newsletter: true,
-    weeklyMails: true,
-  });
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const toggle = (key: keyof typeof settings) =>
-    setSettings((s) => ({ ...s, [key]: !s[key] }));
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/");
-  };
-
   return (
     <div className="flex min-h-screen" style={{ background: "linear-gradient(135deg, #0b0f2a 0%, #0c1344 50%, #080d24 100%)" }}>
       {/* ── Sidebar ── */}
-      <aside className="fixed left-0 top-0 h-screen w-64 bg-slate-900/50 backdrop-blur-xl border-r border-white/5 p-6 flex flex-col z-40">
+      < aside className="fixed left-0 top-0 h-screen w-64 bg-slate-900/50 backdrop-blur-xl border-r border-white/5 p-6 flex flex-col z-40" >
         <div className="flex items-center gap-3 mb-10 px-2">
           <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
             <Database className="h-5 w-5 text-primary fill-white" />
@@ -144,7 +110,7 @@ const Dashboard = () => {
         </div>
 
         <nav className="flex-1 space-y-1">
-         
+
           {sidebarLinks.map((link) => (
             <NavLink
               key={link.to}
@@ -171,48 +137,15 @@ const Dashboard = () => {
           ))}
         </nav>
 
-        <div className="mt-auto pt-4 border-t border-white/5">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <button
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-500 transition-all hover:bg-red-500/10 font-medium"
-              >
-                <LogIn className="w-4 h-4" />
-                Log Out
-              </button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="bg-[#0c1344] border-white/10">
-              <AlertDialogHeader>
-                <AlertDialogTitle className="text-white">Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription className="text-slate-400">
-                  You will be signed out of your account.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel className="bg-white/5 text-white border-white/10 hover:bg-white/10">
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-600 text-white"
-                >
-                  Log Out
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
-      </aside>
+
+      </aside >
 
       {/* ── Main content ── */}
-      <div className="ml-64 flex-1 flex flex-col min-h-screen">
+      < div className="ml-64 flex-1 flex flex-col min-h-screen" >
         {/* Page content */}
-        <main className="flex-1 px-8 py-6 flex flex-col">
-          {/* Profile Informations */}
-          <Profile user={user} />
-        </main>
-      </div>
-    </div>
+        {/* Main content removed or replaced with static */}
+      </div >
+    </div >
   );
 };
 

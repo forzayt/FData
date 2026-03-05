@@ -52,7 +52,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
 
 const accountLinks = [
   { label: "Home", icon: LayoutDashboard, to: "/" },
@@ -112,29 +111,7 @@ const SubmitDataset = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        // Try to get GitHub URL from user metadata
-        const githubUrl = user.user_metadata?.full_name 
-          ? `https://github.com/${user.user_metadata.preferred_username || user.user_metadata.user_name}`
-          : "";
-        
-        // If preferred_username or user_name isn't there, we might need to check provider_id
-        const username = user.user_metadata?.preferred_username || user.user_metadata?.user_name;
-        if (username) {
-          setSubmitterUrl(`https://github.com/${username}`);
-        }
-      }
-    };
-    fetchUser();
-  }, []);
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/");
-  };
 
   const validateUrl = (value: string) => {
     setUrl(value);
@@ -151,14 +128,14 @@ const SubmitDataset = () => {
       toast.error("Please fix the errors before submitting.");
       return;
     }
-    
+
     if (sourceType === "upload" && !file) {
       toast.error("Please select a file to upload.");
       return;
     }
 
     setIsSubmitting(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
@@ -195,37 +172,7 @@ const SubmitDataset = () => {
           ))}
         </nav>
 
-        <div className="mt-auto pt-4 border-t border-white/5">
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <button
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-red-500 transition-all hover:bg-red-500/10 font-medium"
-              >
-                <LogIn className="w-4 h-4" />
-                Log Out
-              </button>
-            </AlertDialogTrigger>
-            <AlertDialogContent className="bg-[#0c1344] border-white/10">
-              <AlertDialogHeader>
-                <AlertDialogTitle className="text-white">Are you sure?</AlertDialogTitle>
-                <AlertDialogDescription className="text-slate-400">
-                  You will be signed out of your account.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel className="bg-white/5 text-white border-white/10 hover:bg-white/10">
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-600 text-white"
-                >
-                  Log Out
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        </div>
+
       </aside>
 
       {/* ── Main content ── */}
@@ -254,7 +201,7 @@ const SubmitDataset = () => {
                     required
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="description" className="text-slate-200">Description</Label>
                   <Textarea
@@ -303,7 +250,7 @@ const SubmitDataset = () => {
                       File Upload
                     </TabsTrigger>
                   </TabsList>
-                  
+
                   <TabsContent value="url" className="space-y-4 focus-visible:outline-none focus-visible:ring-0">
                     <div className="space-y-4">
                       <div className="space-y-2">
@@ -332,16 +279,16 @@ const SubmitDataset = () => {
                         <div className="relative">
                           <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                           <Input
-                          id="source"
-                          placeholder="e.g. Kaggle, UCI, Research Project"
-                          className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
-                          required
-                        />
+                            id="source"
+                            placeholder="e.g. Kaggle, UCI, Research Project"
+                            className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
+                            required
+                          />
                         </div>
                       </div>
                     </div>
                   </TabsContent>
-                  
+
                   <TabsContent value="upload" className="focus-visible:outline-none focus-visible:ring-0">
                     <input
                       type="file"
@@ -350,22 +297,20 @@ const SubmitDataset = () => {
                       className="hidden"
                       accept=".csv,.json"
                     />
-                    
+
                     {!file ? (
                       <div
                         onClick={() => fileInputRef.current?.click()}
                         onDragOver={handleDragOver}
                         onDragLeave={handleDragLeave}
                         onDrop={handleDrop}
-                        className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center transition-all cursor-pointer group ${
-                          isDragging 
-                            ? "border-blue-500 bg-blue-600/10 scale-[1.02]" 
-                            : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20"
-                        }`}
+                        className={`border-2 border-dashed rounded-2xl p-10 flex flex-col items-center justify-center transition-all cursor-pointer group ${isDragging
+                          ? "border-blue-500 bg-blue-600/10 scale-[1.02]"
+                          : "border-white/10 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/20"
+                          }`}
                       >
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110 ${
-                          isDragging ? "bg-blue-600 text-white" : "bg-blue-600/10 text-blue-500"
-                        }`}>
+                        <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110 ${isDragging ? "bg-blue-600 text-white" : "bg-blue-600/10 text-blue-500"
+                          }`}>
                           <Upload className="w-6 h-6" />
                         </div>
                         <p className="text-white font-medium mb-1">Click to upload or drag and drop</p>
@@ -414,16 +359,16 @@ const SubmitDataset = () => {
                     <Input
                       id="submitter"
                       value={submitterUrl}
-                      readOnly
-                      placeholder="https://github.com/username"
-                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500 cursor-not-allowed opacity-70"
+                      onChange={(e) => setSubmitterUrl(e.target.value)}
+                      placeholder="e.g. https://github.com/username or your name"
+                      className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-500"
                       required
                     />
                   </div>
-                  <p className="text-[10px] text-slate-500">Automatically fetched from your profile</p>
+                  <p className="text-[10px] text-slate-500">Link to your profile or website</p>
                 </div>
 
-              
+
 
                 <div className="space-y-2">
                   <Label className="text-slate-200">License</Label>
@@ -435,7 +380,7 @@ const SubmitDataset = () => {
                       <SelectItem value="mit">MIT License</SelectItem>
                       <SelectItem value="cc0">Creative Commons (CC0)</SelectItem>
                       <SelectItem value="apache">Apache 2.0</SelectItem>
-      
+
                     </SelectContent>
                   </Select>
                 </div>

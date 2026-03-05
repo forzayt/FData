@@ -1,45 +1,8 @@
 import { Link } from "react-router-dom";
 import { Database, Github, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/lib/supabase";
-import { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 const Navbar = () => {
-  const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: {
-        redirectTo: window.location.origin,
-      },
-    });
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-  };
 
   return (
     <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4">
@@ -66,28 +29,14 @@ const Navbar = () => {
             Contribute
           </a>
           <Link to="/datasets">
-           
+
           </Link>
 
-          {user ? (
-            <Link to="/dashboard">
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.user_metadata?.avatar_url} />
-                  <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
-                </Avatar>
-              </Button>
-            </Link>
-          ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleLogin}
-              className="rounded-full text-muted-foreground hover:text-foreground"
-            >
-              <User className="h-5 w-5" />
+          <Link to="/dashboard">
+            <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+              Dashboard
             </Button>
-          )}
+          </Link>
         </div>
 
         <div className="flex items-center gap-3 md:hidden">
@@ -105,25 +54,11 @@ const Navbar = () => {
             </Button>
           </Link>
 
-          {user ? (
-            <Link to="/dashboard">
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.user_metadata?.avatar_url} />
-                  <AvatarFallback><User className="h-4 w-4" /></AvatarFallback>
-                </Avatar>
-              </Button>
-            </Link>
-          ) : (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleLogin}
-              className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground"
-            >
+          <Link to="/dashboard">
+            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-muted-foreground hover:text-foreground">
               <User className="h-5 w-5" />
             </Button>
-          )}
+          </Link>
         </div>
       </nav>
     </div>

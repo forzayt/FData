@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import DatasetCard from "@/components/catalog/DatasetCard";
 import DatasetDetailDialog from "@/components/catalog/DatasetDetailDialog";
 import { datasets, formats as allFormats, Dataset } from "@/data/datasets";
-import { supabase } from "@/lib/supabase";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -25,32 +25,7 @@ const Datasets = () => {
   const [selectedFormats, setSelectedFormats] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [detailDataset, setDetailDataset] = useState<Dataset | null>(null);
-  const [user, setUser] = useState<any>(null);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "github",
-      options: {
-        redirectTo: window.location.origin + "/datasets",
-      },
-    });
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-  };
 
   const filtered = useMemo(() => {
     return datasets.filter((d) => {
@@ -59,7 +34,7 @@ const Datasets = () => {
         d.name.toLowerCase().includes(search.toLowerCase()) ||
         d.description.toLowerCase().includes(search.toLowerCase());
       const matchesFormat =
-        selectedFormats.length === 0 || 
+        selectedFormats.length === 0 ||
         selectedFormats.some((f) => d.url.toLowerCase().endsWith(f.toLowerCase()));
       return matchesSearch && matchesFormat;
     });
@@ -89,58 +64,9 @@ const Datasets = () => {
               <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Home</Button>
             </Link>
 
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full border border-white/10 p-0 overflow-hidden hover:bg-white/5">
-                    <Avatar className="h-full w-full">
-                      <AvatarImage src={user.user_metadata?.avatar_url} />
-                      <AvatarFallback className="bg-blue-600 text-white text-[10px]">
-                        {user.email?.substring(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 bg-slate-900 border-white/10 text-white">
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user.user_metadata?.full_name || 'User'}</p>
-                      <p className="text-xs leading-none text-slate-400">{user.email}</p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-white/5" />
-                  <DropdownMenuItem asChild className="focus:bg-white/5 focus:text-white cursor-pointer">
-                    <Link to="/dashboard" className="flex items-center gap-2 w-full">
-                      <LayoutDashboard className="w-4 h-4" />
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="focus:bg-white/5 focus:text-white cursor-pointer">
-                    <Link to="/profile" className="flex items-center gap-2 w-full">
-                      <User className="w-4 h-4" />
-                      Profile
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-white/5" />
-                  <DropdownMenuItem 
-                    onClick={handleLogout}
-                    className="focus:bg-red-500/10 focus:text-red-500 text-red-500 cursor-pointer"
-                  >
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Log Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button 
-                onClick={handleLogin}
-                variant="default" 
-                size="sm" 
-                className="rounded-full px-5 bg-blue-600 hover:bg-blue-700 text-white font-medium shadow-lg shadow-blue-600/20"
-              >
-                Log In
-              </Button>
-            )}
+            <Link to="/dashboard">
+              <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Dashboard</Button>
+            </Link>
           </div>
         </nav>
       </div>
@@ -179,11 +105,10 @@ const Datasets = () => {
                 <button
                   key={format}
                   onClick={() => toggleFormat(format)}
-                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                    selectedFormats.includes(format)
-                      ? "bg-accent text-accent-foreground"
-                      : "bg-secondary text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${selectedFormats.includes(format)
+                    ? "bg-accent text-accent-foreground"
+                    : "bg-secondary text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   {format}
                 </button>
@@ -217,11 +142,10 @@ const Datasets = () => {
                   <button
                     key={i + 1}
                     onClick={() => setPage(i + 1)}
-                    className={`flex h-8 w-8 items-center justify-center rounded-md text-sm transition-colors ${
-                      page === i + 1
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-secondary"
-                    }`}
+                    className={`flex h-8 w-8 items-center justify-center rounded-md text-sm transition-colors ${page === i + 1
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-secondary"
+                      }`}
                   >
                     {i + 1}
                   </button>
