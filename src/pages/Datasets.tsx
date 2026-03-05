@@ -74,10 +74,16 @@ const Datasets = () => {
             <Link to="/">
               <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Home</Button>
             </Link>
+            <a href="https://github.com/forzayt/FData" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="sm" className="flex items-center gap-2 rounded-full px-4 text-white hover:bg-white/5">
+                <Github className="h-4 w-4" />
+                Contribute
+              </Button>
+            </a>
 
             <Dialog>
               <DialogTrigger asChild>
-                
+                <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Submit Dataset</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -118,7 +124,7 @@ const Datasets = () => {
                     <Input id="submitter" name="submitter" type="url" placeholder="e.g. https://github.com/forzayt" required />
                   </div>
                   <Button type="submit" className="w-full">Submit Dataset</Button>
-                  
+
                 </form>
               </DialogContent>
             </Dialog>

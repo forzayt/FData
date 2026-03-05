@@ -22,7 +22,7 @@ const Navbar = () => {
           <a href="/datasets" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             Explore
           </a>
-          {/* <a
+          <a
             href="https://github.com/forzayt/FData"
             target="_blank"
             rel="noopener noreferrer"
@@ -30,7 +30,7 @@ const Navbar = () => {
           >
             <Github className="h-4 w-4" />
             Contribute
-          </a> */}
+          </a>
           <Link to="/datasets">
 
           </Link>
