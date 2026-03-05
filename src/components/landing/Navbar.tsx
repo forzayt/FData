@@ -19,7 +19,10 @@ const Navbar = () => {
           <a href="#how-it-works" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
             How It Works
           </a>
-          <a
+          <a href="/datasets" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+            Explore
+          </a>
+          {/* <a
             href="https://github.com/forzayt/FData"
             target="_blank"
             rel="noopener noreferrer"
@@ -27,16 +30,16 @@ const Navbar = () => {
           >
             <Github className="h-4 w-4" />
             Contribute
-          </a>
+          </a> */}
           <Link to="/datasets">
 
           </Link>
 
-          <Link to="/dashboard">
+          {/* <Link to="/dashboard">
             <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
               Dashboard
             </Button>
-          </Link>
+          </Link> */}
         </div>
 
         <div className="flex items-center gap-3 md:hidden">

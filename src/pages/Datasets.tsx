@@ -64,9 +64,13 @@ const Datasets = () => {
               <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Home</Button>
             </Link>
 
-            <Link to="/dashboard">
-              <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Dashboard</Button>
+            <Link to="/">
+              <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Submit Dataset</Button>
             </Link>
+
+            {/* <Link to="/dashboard">
+              <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Dashboard</Button>
+            </Link> */}
           </div>
         </nav>
       </div>
