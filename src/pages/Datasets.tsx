@@ -77,13 +77,7 @@ const Datasets = () => {
 
             <Dialog>
               <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="rounded-full px-4 text-white hover:bg-white/5"
-                >
-                  Submit Dataset
-                </Button>
+                
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
