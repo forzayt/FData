@@ -18,6 +18,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -65,14 +75,59 @@ const Datasets = () => {
               <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Home</Button>
             </Link>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="rounded-full px-4 text-white hover:bg-white/5"
-              onClick={() => toast("Coming Soon", { description: "Dataset submission is under maintenance." })}
-            >
-              Submit Dataset
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full px-4 text-white hover:bg-white/5"
+                >
+                  Submit Dataset
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Submit a Dataset</DialogTitle>
+                  <DialogDescription>
+                    Fill in the details below to submit a new dataset.
+                  </DialogDescription>
+                </DialogHeader>
+                <form action="https://formsubmit.co/vishnusanthoshvr@gmail.com" method="POST" className="grid gap-4 py-4 max-h-[80vh] overflow-y-auto pr-2">
+                  <input type="hidden" name="_subject" value="New Dataset Submission!" />
+                  <input type="hidden" name="_captcha" value="true" />
+                  <div className="grid gap-2">
+                    <Label htmlFor="name">Dataset Name</Label>
+                    <Input id="name" name="name" placeholder="e.g. All India Pincode Dataset" required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea id="description" name="description" placeholder="Dataset containing pincode-wise information..." required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="size">Size</Label>
+                    <Input id="size" name="size" placeholder="e.g. 45 MB" required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="license">License</Label>
+                    <Input id="license" name="license" placeholder="e.g. MIT" required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="source">Source Entity</Label>
+                    <Input id="source" name="source" placeholder="e.g. data.gov.in" required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="url">Dataset URL</Label>
+                    <Input id="url" name="url" type="url" placeholder="https://forzayt.github.io/FData/src/data/datasets/..." required />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="submitter">Submitter</Label>
+                    <Input id="submitter" name="submitter" type="url" placeholder="e.g. https://github.com/forzayt" required />
+                  </div>
+                  <Button type="submit" className="w-full">Submit Dataset</Button>
+                  
+                </form>
+              </DialogContent>
+            </Dialog>
 
             {/* <Link to="/dashboard">
               <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Dashboard</Button>
