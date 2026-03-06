@@ -81,9 +81,9 @@ const Datasets = () => {
             </a>
 
             <Dialog>
-              <DialogTrigger asChild>
+              {/* <DialogTrigger asChild>
                 <Button variant="ghost" size="sm" className="rounded-full px-4 text-white hover:bg-white/5">Submit Dataset</Button>
-              </DialogTrigger>
+              </DialogTrigger> */}
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                   <DialogTitle>Submit a Dataset</DialogTitle>
