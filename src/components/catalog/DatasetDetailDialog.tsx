@@ -61,19 +61,26 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
       const response = await fetch(dataset.url);
       const text = await response.text();
 
-      // Basic CSV parsing
-      const lines = text.split("\n").filter(line => line.trim());
-      const headers = lines[0].split(",");
-      setRowCount(lines.length - 1);
-      const data = lines.slice(1, 11).map(line => {
-        const values = line.split(",");
-        return headers.reduce((obj: any, header, index) => {
-          obj[header.trim()] = values[index]?.trim();
-          return obj;
-        }, {});
-      });
+      if (dataset.extension.toLowerCase() === 'json') {
+        const jsonData = JSON.parse(text);
+        const dataArray = Array.isArray(jsonData) ? jsonData : [jsonData];
+        setRowCount(dataArray.length);
+        setPreviewData(dataArray.slice(0, 10));
+      } else {
+        // Basic CSV parsing
+        const lines = text.split("\n").filter(line => line.trim());
+        const headers = lines[0].split(",");
+        setRowCount(lines.length - 1);
+        const data = lines.slice(1, 11).map(line => {
+          const values = line.split(",");
+          return headers.reduce((obj: any, header, index) => {
+            obj[header.trim()] = values[index]?.trim();
+            return obj;
+          }, {});
+        });
 
-      setPreviewData(data);
+        setPreviewData(data);
+      }
     } catch (error) {
       console.error("Error fetching preview data:", error);
     } finally {
@@ -179,7 +186,9 @@ const DatasetDetailDialog = ({ dataset, open, onOpenChange }: DatasetDetailDialo
                     <TableRow key={i} className="border-border/50 hover:bg-secondary/20">
                       {previewColumns.map((col) => (
                         <TableCell key={col} className="text-xs whitespace-nowrap">
-                          {String(row[col])}
+                          {typeof row[col] === 'object' && row[col] !== null 
+                            ? JSON.stringify(row[col]) 
+                            : String(row[col] ?? '')}
                         </TableCell>
                       ))}
                     </TableRow>
