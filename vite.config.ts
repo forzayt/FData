@@ -14,7 +14,7 @@ function datasetSizes() {
     },
     load(id: string) {
       if (id === '\0virtual:dataset-sizes') {
-        const dir = path.resolve(__dirname, 'src/data/datasets');
+        const dir = path.resolve(__dirname, 'datasets');
         const sizes: Record<string, number> = {};
         if (fs.existsSync(dir)) {
           const files = fs.readdirSync(dir);

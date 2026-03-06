@@ -116,7 +116,7 @@ const Datasets = () => {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="url">Dataset URL</Label>
-                    <Input id="url" name="url" type="url" placeholder="https://forzayt.github.io/FData/src/data/datasets/..." required />
+                    <Input id="url" name="url" type="url" placeholder="https://forzayt.github.io/FData/datasets/..." required />
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="submitter">Submitter</Label>

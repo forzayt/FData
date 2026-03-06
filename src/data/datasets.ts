@@ -7,7 +7,7 @@ export interface Dataset {
   url: string;
 }
 
-const files = import.meta.glob('./datasets/*.*', { query: '?url' });
+const files = import.meta.glob('../../datasets/*.*', { query: '?url' });
 
 function formatBytes(bytes: number, decimals = 2) {
   if (!+bytes) return '0 Bytes';
@@ -30,7 +30,7 @@ export const datasets: Dataset[] = Object.keys(files).map((filePath) => {
     name: name.replace(/_/g, ' '),
     extension: extension,
     size: sizeInBytes ? formatBytes(sizeInBytes) : "Unknown",
-    url: `https://forzayt.github.io/FData/src/data/datasets/${fileNameWithExt}`,
+    url: `https://forzayt.github.io/FData/datasets/${fileNameWithExt}`,
   };
 });
 
