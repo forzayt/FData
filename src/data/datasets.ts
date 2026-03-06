@@ -7,7 +7,7 @@ export interface Dataset {
   url: string;
 }
 
-const files = import.meta.glob('./datasets/*.*');
+const files = import.meta.glob('./datasets/*.*', { query: '?url' });
 
 function formatBytes(bytes: number, decimals = 2) {
   if (!+bytes) return '0 Bytes';
