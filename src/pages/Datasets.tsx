@@ -29,7 +29,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 30;
 
 const Datasets = () => {
   const [search, setSearch] = useState("");
